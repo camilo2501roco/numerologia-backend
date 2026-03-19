@@ -307,7 +307,7 @@ const retornoMercadoPago = async (req, res) => {
       console.log("🚀 Procesando pago instantáneo desde retorno...");
       await procesarPagoAprobado(finalPaymentId);
     }
-    
+
     const frontendUrl = process.env.FRONTEND_URL;
     // Redireccionamos al frontend con el estado como query param
     res.redirect(`${frontendUrl}/#/usuario/pago-exitoso?status=${finalStatus}`);
