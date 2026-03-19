@@ -52,13 +52,12 @@ Realiza una lectura numerológica principal completa que incluya:
 
 1. **Número del Destino**: Calcula y analiza el número del destino a partir de la fecha de nacimiento.
 
-${
-  tieneNombre
-    ? `2. **Número de la Personalidad**: Calcula usando las consonantes de "${nombre_completo}" con el sistema Pitagórico.
+${tieneNombre
+        ? `2. **Número de la Personalidad**: Calcula usando las consonantes de "${nombre_completo}" con el sistema Pitagórico.
 3. **Número de la Expresión**: Calcula usando todas las letras de "${nombre_completo}" con el sistema Pitagórico.`
-    : `2. **Número de la Personalidad**: El nombre no está disponible, usa el día de nacimiento como aproximación y aclara esta limitación.
+        : `2. **Número de la Personalidad**: El nombre no está disponible, usa el día de nacimiento como aproximación y aclara esta limitación.
 3. **Número de la Expresión**: El nombre no está disponible, usa los componentes de la fecha como aproximación y aclara esta limitación.`
-}
+      }
 
 4. **Análisis General**: Insights sobre la vida del usuario basado en los números anteriores.
 
@@ -70,6 +69,7 @@ Responde en español y en un tono inspirador pero realista.`;
       year: "numeric",
       month: "long",
       day: "numeric",
+      timeZone: "UTC"
     });
 
     prompt = `Eres un experto numerólogo. Proporciona una lectura numerológica diaria para hoy (${fechaActual}).
