@@ -7,7 +7,8 @@ import {
     getAllPagos,
     getAllLecturas,
     cambiarRolUsuario,
-    deleteUsuarioAdmin
+    deleteUsuarioAdmin,
+    cambiarEstadoUsuario
 } from "../controllers/admin.js";
 
 const routerAdmin = Router();
@@ -71,6 +72,27 @@ routerAdmin.delete(
         validarCampos
     ],
     deleteUsuarioAdmin
+);
+
+/**
+ * PUT http://localhost:3000/api/admin/usuario/:usuario_id/estado
+ * Cambiar estado de un usuario (activo ↔ inactivo)
+ * 
+ * Body:
+ * {
+ *   "estado": "activo" | "inactivo"
+ * }
+ */
+routerAdmin.put(
+    "/usuario/:usuario_id/estado",
+    [
+        check("usuario_id", "ID de usuario inválido").isMongoId(),
+        check("estado", "Estado requerido").notEmpty(),
+        check("estado", "Estado debe ser 'activo' o 'inactivo'")
+            .isIn(['activo', 'inactivo']),
+        validarCampos
+    ],
+    cambiarEstadoUsuario
 );
 
 export default routerAdmin;

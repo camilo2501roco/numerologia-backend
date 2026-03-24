@@ -215,11 +215,63 @@ const deleteUsuarioAdmin = async (req, res) => {
     }
 };
 
+/**
+ * CAMBIAR ESTADO DE USUARIO (Admin)
+ * PUT /api/admin/usuario/:usuario_id/estado
+ * Body: { estado: 'activo' | 'inactivo' }
+ */
+const cambiarEstadoUsuario = async (req, res) => {
+    try {
+        const { usuario_id } = req.params;
+        const { estado } = req.body;
+
+        // Validar que el estado sea válido
+        if (!['activo', 'inactivo'].includes(estado)) {
+            return res.status(400).json({
+                error: 'Estado inválido',
+                msg: 'El estado debe ser "activo" o "inactivo"'
+            });
+        }
+
+        // No permitir que se bloquee a sí mismo
+        if (req.usuario._id.toString() === usuario_id) {
+            return res.status(400).json({
+                error: 'No permitido',
+                msg: 'No puedes cambiar tu propio estado desde esta vista'
+            });
+        }
+
+        const usuarioActualizado = await Usuario.findByIdAndUpdate(
+            usuario_id,
+            { estado },
+            { new: true }
+        ).select('-password');
+
+        if (!usuarioActualizado) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        res.json({
+            success: true,
+            msg: `Estado del usuario actualizado a ${estado}`,
+            usuario: usuarioActualizado
+        });
+
+    } catch (error) {
+        console.error('Error al cambiar estado:', error.message);
+        res.status(500).json({
+            error: 'Error al cambiar estado',
+            detalle: error.message
+        });
+    }
+};
+
 export {
     getDashboard,
     getAllUsuarios,
     getAllPagos,
     getAllLecturas,
     cambiarRolUsuario,
-    deleteUsuarioAdmin
+    deleteUsuarioAdmin,
+    cambiarEstadoUsuario
 };
